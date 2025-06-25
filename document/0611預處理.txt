@@ -1,0 +1,154 @@
+0611 預測分析預處理
+
+1. Excel：Superstore 刪掉 ProductName / col name 去掉空白和 - / 轉成CSV
+2. Dataflow：轉 Date 做 Prediction
+
+-----------------------------------
+
+0611
+1. AutoML 需要處理 Categorical Columns to Numerical
+
+
+做EDA 所有的 categorical col 
+
+
+CustomerID,CustomerName
+
+----------------------------------
+
+0612
+01. 1 quarter
+02. bestfit / 1 quarter
+03. 1 week
+08. 只取一年2020每小時，預測一個月
+
+
+
+1. Canada = 1, UK = 2, USA = 3
+2. Walmart = 1, Amazon = 2, iHerb = 3
+
+
+------------------------------
+
+0613 
+
+01 predict 1 week
+02 predict 168 hour (24*7) / Time Budget 要改 (否則 120 兩分鐘不夠)
+03 Predict 24 hour / 用 744 rows / Jan / 3600 sec (1 hour)
+    跑太久 砍了categories
+	改成 period 2 (應是預測 2 hour)
+04 (x) predict 10 weeks / 用 vitaminc2020-2024的資料
+05 predict 10 weeks / 用 vitaminc2020-2024的資料 / 3600 time
+06 1 week / 用vitaminc2020-2024 / Time 3600
+07 1 week / 用vitaminc2020-2024 / Time 3600 (跑很久 失敗)
+
+-------換模型-----------------
+
+08 regression interpretable / 用 online2020_ts / 有timestamp / 預設30分鐘 /
+09 regression interpretable / 用 online2020 沒有time / 多 description / 設20分鐘 1200 sec /
+
+--------------------------------
+
+0616
+
+01 依據特徵重要性刪除 Return Status, Sales Channel, Order Priority 
+   forecast model / 1 year / budget 1200 >> fail
+   結論：放棄 forcast model
+02 依據特徵重要性 / regression interpretable >> 0.3753
+   結論：優化模型
+03 刪除 quantity 的 outliers / regression interpretable >> 0.2538
+04 復原 quantity / 加入 datetime 5 欄位 >> 0.3628 (power bi demo)
+05 error >> 0.36427
+06 復原 quantity / 加入 datetime 5 欄位 
+   只留下 6 selected_features = [
+    "ShippingCost",
+    "WarehouseLocation",
+    "UnitPrice",
+    "Category",
+    "Country",
+    "Hour"] >> 0.36617
+
+---------------------------------------
+
+0617
+
+01 Fail
+02 只跑 2020-2024 (43826 rows)  / pre061702 
+
+----------------------------------------
+use model
+
+%pip install scikit-learn==1.5.1
+
+01 pre061702model
+02 pre061702modelq
+
+https://www.kaggle.com/datasets/yusufdelikkaya/online-sales-dataset
+
+--------------------------------------------
+
+0618
+
+01 刪掉 quantity < 0 (~41000 rows) / pre_061801_24 (r2 -)
+02 刪掉 quantity < 0 (~41000 rows) / pre_061802_24
+
+------------------------------------------------
+
+0619
+
+01 用0616d24 重跑0618train
+
+-------------------------
+
+0623
+
+num_cols = ['Quantity', 'UnitPrice', 'Discount', 'ShippingCost']
+cat_cols = [
+    'Description', 'Year', 'Quarter', 'Month', 'DateofWeek', 'Hour',
+    'Country', 'PaymentMethod', 'Category', 'ShipmentProvider', 'WarehouseLocation']
+
+062302Train 有 scaling	/ online_062306_pre
+062302Train (3) 有 scaling+encoding / online_062307_pre
+
+-----------------------------------
+
+0624
+
+02 不改 (2020-2022)
+03 062403_pre 改 model (2020-2022)
+	"estimator_list": [
+        "lgbm",
+        "rf",
+        "xgboost",
+        "extra_tree",
+        "xgb_limitdepth"]
+04 062404_pre (2020-2022)
+	"metric": "mse" (stop)
+	https://microsoft.github.io/FLAML/docs/Use-Cases/Task-Oriented-AutoML/#optimization-metric
+05 062405_pre (2020-2022)
+	"metric": ["r2","mse"]
+06 062406_pre (2020-2022)
+	"metric": "mse"
+	
+
+	"estimator_list": ["catboost"]
+
+
+07 062407 (使用 062306_pre) (在 062302Train 的 Notebook)
+	1. scaling
+	2. "metric": "mse"
+	
+08 062408 (用2020-2024)
+	"metric": "mse"
+	"time_budget": 1200
+	
+	優化的文件
+	https://microsoft.github.io/FLAML/docs/Use-Cases/Task-Oriented-AutoML/#optimization-metric
+	
+-----------------------------------------------------
+
+0625
+
+01 在Fabric結合Pipeline
+02 在VScode重新跑一次
+03 加上Standard Scaler

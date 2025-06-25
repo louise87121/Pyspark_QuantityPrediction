@@ -1,0 +1,44 @@
+0605 預測分析需求
+
+1. 先了解 Fabric/Power BI Data Science Labs 預測分析: 能做到的範圍 (需要第三方嗎)
+2. Stocks / 競品的價格變動 / 熱銷時間點(生命週期) 和競品.定價的關係
+3. 兩周左右/下周三/要不要投入
+4. 自訂案例：準確率難定
+5. 參考億光2022PoC
+6. Synapse ML
+ 
+https://learn.microsoft.com/en-us/power-bi/connect-data/service-tutorial-build-machine-learning-model
+https://learn.microsoft.com/en-us/fabric/data-science/tutorial-data-science-create-report
+
+• 難以預測熱銷機會點，常發生熱銷缺貨或過度備貨
+• 各平台競品的價格變動、缺貨狀況無法快速掌握
+• 自家庫存與補貨策略缺乏數據化決策依據
+
+--------------------------------------
+
+依昨天會議討論的內容，記錄此實驗的項目與目標：
+1.	目標：
+(1)、	第一週（約6/9~6/13）
+i.	瞭解Power BI + Machine Learning 基礎操作與應用能力
+ii.	瞭解Fabric Data Science基礎操作與應用能力
+(2)、	第二週（約6/16~6/20）
+i.	嘗試庫存預測分析資料收集（若網路上沒有模擬資料，可以用Tableau Superstore sample）
+ii.	規規劃庫存預測分析的期望達成目標，與實驗環境與作業步驟
+(3)、	第三週（約6/23~6/27）
+i.	依前2週的進度，準備成果分享
+2.	時間：約2~3週(6/9~6/27)
+3.	注意事項：
+(1)、	優先順序：以手上負責的專案處理為優先，此實驗排第二
+(2)、	內容調整：若發現研究卡關或環境準備困難，都可以來找我們討論
+
+--------------------------------------
+
+從 3 月 28 日開始，客戶將無法在 Power BI 中創建新的 AutoML 模型，
+但他們仍然可以使用已創建的現有模型。
+https://powerbi.microsoft.com/zh-tw/blog/announcing-the-deprecation-of-creation-of-machine-learning-models-in-power-bi-using-dataflows-v1/
+
+------------------------------------
+
+SynapseML（synapseml）
+
+------------------------------------
