@@ -148,6 +148,7 @@ cat_cols = [
 -----------------------------------------------------
 
 0625
+https://microsoft.github.io/FLAML/docs/Examples/Integrate%20-%20Scikit-learn%20Pipeline
 
 01 在Fabric結合Pipeline
 02 在VScode重新跑一次
